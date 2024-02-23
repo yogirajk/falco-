@@ -1,0 +1,3 @@
+[submodule "falco-intel"]
+	path = falco-intel
+	url = https://github.com/yogirajk/falco-intel.git
