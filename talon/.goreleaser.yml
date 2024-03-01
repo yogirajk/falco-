@@ -1,0 +1,53 @@
+project_name: falco-talon
+
+env:
+  - GO111MODULE=on
+  - DOCKER_CLI_EXPERIMENTAL=enabled
+  - DOCKER_BUILDKIT=1
+  - BUILDX_PLATFORMS=linux/amd64,linux/arm64
+  - COSIGN_YES=true
+
+snapshot:
+  name_template: 'latest'
+
+checksum:
+  name_template: 'checksums.txt'
+
+# Prevents parallel builds from stepping on each others toes downloading modules
+before:
+  hooks:
+    - go mod tidy
+    - /bin/bash -c 'if [ -n "$(git --no-pager diff --exit-code go.mod go.sum)" ]; then exit 1; fi'
+
+builds:
+  - id: "falco-talon"
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - "{{ .Env.LDFLAGS }}"
+    binary: falco-talon
+
+kos:
+  - id: falco-talon
+    repository: issif/falco-talon
+    tags:
+    - '{{.Version}}'
+    - latest
+    bare: true
+    preserve_import_paths: false
+    platforms:
+    - linux/amd64
+    - linux/arm64
+
+release:
+  github:
+    owner: issif
+    name: falco-talon
+  prerelease: auto

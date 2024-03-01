@@ -1,0 +1,23 @@
+- action: Terminate Pod
+  actionner: kubernetes:terminate
+
+
+- rule: Suspicious outbound connection
+  match:
+    rules:
+      - Contact K8S API Server From Container
+      - Detect crypto miners using the Stratum protocol
+      - Launch Suspicious Network Tool in Container
+      - Detect outbound connections to common miner pool
+      - Linux Kernel Module Injection Detected
+      - Launch Remote File Copy Tools in Container
+      - Unexpected K8s NodePort Connection
+      - Malicious binary detected
+      - Packet socket created in container
+      - The docker client is executed in a container
+      - Netcat Remote Code Execution in Container
+      - Redirect STDOUT/STDIN to Network Connection in Container
+  actions:
+    - action: Terminate Pod
+      parameters:
+        grace_period_seconds: 0
