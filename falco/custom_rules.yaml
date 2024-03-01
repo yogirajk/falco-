@@ -1192,6 +1192,15 @@ customRules:
               and not container.image.repository in (known_drop_and_execute_containers) and (k8s.ns.name contains "-intel")  and  container.name != "fe"
             output: Executing binary not part of base image (proc_exe=%proc.exe proc_sname=%proc.sname gparent=%proc.aname[2] proc_exe_ino_ctime=%proc.exe_ino.ctime proc_exe_ino_mtime=%proc.exe_ino.mtime proc_exe_ino_ctime_duration_proc_start=%proc.exe_ino.ctime_duration_proc_start proc_cwd=%proc.cwd container_start_ts=%container.start_ts evt_type=%evt.type user=%user.name user_uid=%user.uid user_loginuid=%user.loginuid process=%proc.name proc_exepath=%proc.exepath parent=%proc.pname command=%proc.cmdline terminal=%proc.tty exe_flags=%evt.arg.flags %container.info)
             priority: CRITICAL
+            exceptions:
+            - name: proc_cmdline
+              fields: proc.cmdline
+              comps: in
+              values:
+              - git
+              - pip
+              - 'git clone'
+              - 'sh -c pip'
             tags: [maturity_stable, container, process, mitre_persistence, TA0003, PCI_DSS_11.5.1]
           
           # RFC1918 addresses were assigned for private network usage
@@ -2037,6 +2046,7 @@ customRules:
               and not expected_udp_traffic and not (k8s.ns.name contains "openshift")
             output: Unexpected UDP Traffic Seen (connection=%fd.name lport=%fd.lport rport=%fd.rport fd_type=%fd.type fd_proto=fd.l4proto evt_type=%evt.type user=%user.name user_uid=%user.uid user_loginuid=%user.loginuid process=%proc.name proc_exepath=%proc.exepath parent=%proc.pname command=%proc.cmdline terminal=%proc.tty %container.info)
             priority: NOTICE
+            enabled: false
             tags: [maturity_incubating, host, container, network, mitre_exfiltration, TA0011]
           
           - macro: somebody_becoming_themselves
