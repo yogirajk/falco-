@@ -373,7 +373,7 @@ falcosidekick:
   #webui
   webui:
     enabled: true
-    user: "admin:admin"
+    user: "xxxxx:xxxxx"
     ttl: 259200
     nodeSelector:
       node-role.kubernetes.io/infra: ""
@@ -813,7 +813,7 @@ falco:
     enabled: true
     keep_alive: false
     program: |
-      jq -r '{rule: .rule, priority: .priority, user: (.output | capture("k8s_ns=(?<k8s_ns>[^ ]+)") | .k8s_ns), output: .output}' | curl -k -d @- --location --request POST 'https://user.apps.dtb.one-edge.intel.com/api/v1/user/rogue' --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJTYWxlc2ZvcmNlIiwic291cmNlIjoiU2FsZXNmb3JjZSIsImV4cCI6MTcxODUwNDI4MCwiaWF0IjoxNjg2ODgxOTUzfQ.RLF6F8owIXETrZj6H8EAx1seyjFuc5hLjgcUaTOmKjyU6tNJCME0J494wSyZ903Ujz67Sxf9W8HOXYEiJSDWwZg7lfHoF7ckqkitZT84xZ8rbBRKj3jOLqOS5SHpbAwbf0H-oQge8S534D2FCqZN-RikVZJL2B_eptfenNgQxkE' --header 'Content-Type: application/json'
+      jq -r '{rule: .rule, priority: .priority, user: (.output | capture("k8s_ns=(?<k8s_ns>[^ ]+)") | .k8s_ns), output: .output}' | curl -k -d @- --location --request POST 'https://user.xxx.com/api/v1/user/rogue' --header 'Authorization: Bearer <token>' --header 'Content-Type: application/json'
 
   # [Stable] `grpc_output`
   #
